@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>Video</title>
+<script language="javascript">
+if (window.name != "LeftupFrame") location = "content.htm";
+</script>
+</head>
+
+<script language="javascript" FOR="window" EVENT="onload">
+//Load ASF File
+if(document.location.protocol == "file:") 
+  AsxFileName = "localclip.asx";
+else 
+  AsxFileName = "remoteclip.asp";
+MediaPlayer.URL = AsxFileName;
+</script>
+
+<script language="javascript">
+var 	mpStopped=1, mpPaused=2, mpPlaying=3,
+	mpScanForward=4, mpScanReverse=5, mpEnded=8,
+        NeverUpdatePosition=1,TimerID=0,
+        Waiting=0,WaitingCount=0,
+        AsxFileName;
+
+function Syn()
+{
+  TimerID = setTimeout("Syn()",1000);
+  
+  if (MediaPlayer.PlayState == mpPlaying)
+  {
+    if ((MediaPlayer.Controls.currentPosition * 1000 > parent.RightFrame.VGAPlayer.Max) && 
+	(parent.RightFrame.VGAPlayer.Max < parent.RightFrame.VGAPlayer.Duration))
+    {
+      Waiting = 1;
+      WaitingCount = 10;
+      MediaPlayer.Controls.Pause();
+    }
+    parent.RightFrame.VGAPlayer.CurrentPosition = MediaPlayer.Controls.currentPosition * 1000; 
+  }
+  else
+  if (Waiting)
+  {
+    WaitingCount--;
+    if (WaitingCount == 0)
+    {
+        if (MediaPlayer.Controls.currentPosition * 1000 < parent.RightFrame.VGAPlayer.Max)
+	{
+	  Waiting=0;
+	  MediaPlayer.Controls.Play();
+	}
+	else
+	  WaitingCount = 10;
+    }
+  }
+}
+</script>
+
+<script language="javascript" FOR="MediaPlayer" EVENT="Buffering(Start)">
+if (Start)
+{
+  parent.RightFrame.VGAPlayer.Pause();
+}
+else
+{
+  parent.RightFrame.VGAPlayer.Play();
+}
+</script>
+
+<script language="javascript" FOR="MediaPlayer" EVENT="playStateChange(NewState)">
+switch(NewState) 
+{
+  case mpPlaying: 
+	parent.RightFrame.VGAPlayer.Play();
+        if (TimerID == 0) Syn();
+	break;
+  case mpPaused:
+	parent.RightFrame.VGAPlayer.Pause();
+	break;
+  case mpStopped:
+	parent.RightFrame.VGAPlayer.Stop();
+	break;
+  case mpEnded:
+	parent.RightFrame.VGAPlayer.Stop();
+}
+</script>
+
+<script language="javascript" FOR="MediaPlayer" EVENT="PositionChange(dblOldPosition, dblNewPosition)">
+  parent.RightFrame.VGAPlayer.CurrentPosition = dblNewPosition * 1000;
+</script>
+
+<body bgcolor="black">
+<object align=right classid=CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6 id=MediaPlayer width="100%" height="100%"> 
+      type=application/x-oleobject 
+      standby="Loading Microsoft? Windows? Media Player components...">
+          <param name="URL" value>
+          <param name="rate" value="1">
+          <param name="balance" value="0">
+          <param name="currentPosition" value="0">
+          <param name="defaultFrame" value>
+          <param name="playCount" value="1">
+          <param name="autoStart" value="-1">
+          <param name="currentMarker" value="0">
+          <param name="invokeURLs" value="-1">
+          <param name="baseURL" value>
+          <param name="volume" value="100">
+          <param name="mute" value="0">
+          <param name="uiMode" value="full">
+          <param name="stretchToFit" value="-1">
+          <param name="windowlessVideo" value="0">
+          <param name="enabled" value="-1">
+          <param name="enableContextMenu" value="-1">
+          <param name="fullScreen" value="0">
+          <param name="SAMIStyle" value>
+          <param name="SAMILang" value>
+          <param name="SAMIFilename" value>
+          <param name="captioningID" value>
+        </object>
+</object>
+</body>
+</html>

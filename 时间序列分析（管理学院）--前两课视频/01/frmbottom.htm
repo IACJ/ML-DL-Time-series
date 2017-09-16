@@ -1,0 +1,381 @@
+<html>
+<head>
+<title>ShowControl</title>
+<script language="javascript">
+if (window.name != "BottomFrame") location = "content.htm"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/content.htm*/;
+</script>
+<script language="javascript">
+function SetBorder( obj,upperLeft, lowerRight,bgcolor,fcolor )
+{
+	s=obj.style;
+	s.borderStyle      = "solid";
+	s.borderWidth      = 1 ;
+	s.borderLeftColor  = s.borderTopColor = upperLeft;
+	s.borderBottomColor= s.borderRightColor = lowerRight;
+	s.backgroundColor  = bgcolor;
+	s.color            = fcolor; 
+}
+</script>
+
+<script language="javascript">
+var 	mpStopped=1, mpPaused=2, mpPlaying=3,
+	mpScanForward=4, mpScanReverse=5, mpEnded=8,mpReady=10,
+        AsxFileName;
+ 
+	function switchBtn() 
+	{
+	  switch(event.srcElement) 
+	  {
+		case btnPlay:
+		  if(MediaPlayer.PlayState == mpStopped || MediaPlayer.PlayState == mpReady || MediaPlayer.PlayState == mpPaused || MediaPlayer.PlayState == mpScanForward || MediaPlayer.PlayState == mpScanReverse) 
+		  {
+		     if(event.type == "mouseover")   SetBorder(btnPlay,"white","DIMGRAY","LAVENDER","DARKMAGENTA");
+		     if(event.type == "mousedown")   SetBorder(btnPlay,"DIMGRAY","white","white","SLATEBLUE");
+		     if(event.type == "mouseout")    SetBorder(btnPlay,"silver","silver","silver","black");
+		  }
+		  break;
+		case btnPause:
+		  if(MediaPlayer.PlayState == mpPlaying || MediaPlayer.PlayState == mpScanForward || MediaPlayer.PlayState == mpScanReverse) 
+		  {
+   		     if(event.type == "mouseover")   SetBorder(btnPause,"white","DIMGRAY","LAVENDER","DARKMAGENTA");
+		     if(event.type == "mousedown")   SetBorder(btnPause,"DIMGRAY","white","white","SLATEBLUE");
+		     if(event.type == "mouseout")    SetBorder(btnPause,"silver","silver","silver","black");
+		  }
+		  break;
+		case btnStop:
+		  if(MediaPlayer.PlayState == mpPlaying || MediaPlayer.PlayState == mpPaused || MediaPlayer.PlayState == mpScanForward || MediaPlayer.PlayState == mpScanReverse) 
+		  {
+		     if(event.type == "mouseover")   SetBorder(btnStop,"white","DIMGRAY","LAVENDER","DARKMAGENTA");
+		     if(event.type == "mousedown")   SetBorder(btnStop,"DIMGRAY","white","white","SLATEBLUE");
+		     if(event.type == "mouseout")    SetBorder(btnStop,"silver","silver","silver","black");
+		  }
+		  break;
+		case btnFF:
+		  if(!MediaPlayer.CanScan) return;
+   		  if(MediaPlayer.PlayState == mpPlaying || MediaPlayer.PlayState == mpPaused || MediaPlayer.PlayState == mpStopped) 
+		  {
+		     if(event.type == "mouseover")   SetBorder(btnFF,"white","DIMGRAY","LAVENDER","DARKMAGENTA");
+		     if(event.type == "mousedown")   SetBorder(btnFF,"DIMGRAY","white","white","SLATEBLUE");
+		     if(event.type == "mouseout")    SetBorder(btnFF,"silver","silver","silver","black");
+		  }
+		  break;
+		case btnRew:
+		  if(!MediaPlayer.CanScan) return;
+		  if(MediaPlayer.PlayState == mpPlaying || MediaPlayer.PlayState == mpPaused || MediaPlayer.PlayState == mpStopped) 
+		  {
+		     if(event.type == "mouseover")   SetBorder(btnRew,"white","DIMGRAY","LAVENDER","DARKMAGENTA");
+		     if(event.type == "mousedown")   SetBorder(btnRew,"DIMGRAY","white","white","SLATEBLUE");
+		     if(event.type == "mouseout")    SetBorder(btnRew,"silver","silver","silver","black");
+		  }
+		  break;
+		
+		case btnBack:
+		  if(event.type == "mouseover")   SetBorder(btnBack,"white","DIMGRAY","LAVENDER","DARKMAGENTA");
+		  if(event.type == "mousedown")   SetBorder(btnBack,"DIMGRAY","white","white","SLATEBLUE");
+		  if(event.type == "mouseout")    SetBorder(btnBack,"silver","silver","silver","black");
+		  break;
+		case btnAudio:
+		  if(event.type == "mouseover")   SetBorder(btnAudio,"white","DIMGRAY","silver");
+		  if(event.type == "mousedown")   SetBorder(btnAudio,"DIMGRAY","white","white","white");
+		  if(event.type == "mouseout")    SetBorder(btnAudio,"silver","silver","silver");
+		  break;
+		case imgAudio:
+		  if(event.type == "mouseover")   SetBorder(btnAudio,"white","DIMGRAY","silver");
+		  if(event.type == "mousedown")   SetBorder(btnAudio,"DIMGRAY","white","white","white");
+		  if(event.type == "mouseout")    SetBorder(btnAudio,"silver","silver","silver");
+		  break;
+		case AllowScl:
+		  if(event.type == "mouseover") AllowScl.src="allowdownover.gif"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/allowdownover.gif*/;
+		  if(event.type == "mouseout") 	AllowScl.src="allowdown.gif"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/allowdown.gif*/;
+		  break;
+		case AllowCon:
+		  if(event.type == "mouseover") AllowCon.src="allowdownover.gif"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/allowdownover.gif*/;
+		  if(event.type == "mouseout") 	AllowCon.src="allowdown.gif"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/allowdown.gif*/;
+		  break;
+  	  }
+	} 
+</script>
+
+<script language="javascript" FOR="window" EVENT="onload">
+//Load ASF File
+if(document.location.protocol == "file:") 
+{
+  AsxFileName = "localclip.asx"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/localclip.asx*/;
+} else 
+{
+  AsxFileName = "remoteclip.asx"/*tpa=http://61.50.188.200/jxsj/jdyth/KJ/01/remoteclip.asx*/;
+}
+SetFileName();
+window.setInterval("UpdateStatus()", 1000);
+</script>
+
+<script language="javascript">
+var Selected = false, CurLeft = 15;
+
+	//MouseDown -> DragStart -> MouseMove -> MouseUp
+
+	//Log the MouseDown action on special object(btnScroll)
+	function doMouseDown() 
+	{
+        	if(event.button == 1) 
+		{
+			Selected = true;
+		}
+      	}
+
+	function doDragStart() 
+	{
+		// Don't do default drag operation if user is dragging the special object
+		if(Selected) 
+		{
+		          event.returnValue=false;
+		}
+	}
+
+	function doMouseMove() 
+	{
+		var newleft = 0;
+		if(Selected && (event.button == 1)) 
+                {
+			//alien the position of this object
+			newleft = event.clientX - document.all.OuterDiv.offsetLeft - (btnScroll.offsetWidth/2);
+			if(newleft<18) 
+                          newleft=18;
+			else 
+                        if(newleft>OuterDiv.width) 
+                          newleft=OuterDiv.width + 3;
+			btnScroll.style.pixelLeft = newleft;
+			event.returnValue = false;
+			event.cancelBubble = true;
+		}
+	}
+
+	
+	function doMouseUp() 
+	{
+		var NewLeft;
+		if(!Selected) return;
+
+		NewLeft = btnScroll.style.pixelLeft;
+		if(NewLeft != CurLeft) 
+                {
+			//Change the position on Media Clip
+			MediaPlayer.Controls.CurrentPosition = (NewLeft - 18)/(OuterDiv.width-18) * MediaPlayer.CurrentMedia.Duration;
+		}
+		//Log current position
+		CurLeft = NewLeft;
+		//This operation have done
+		Selected = false;
+	}
+	document.ondragstart = doDragStart;
+	document.onmousemove = doMouseMove;
+	document.onmouseup   = doMouseUp;
+    </script>
+<script LANGUAGE="JavaScript">
+
+function SetFileName() 
+{
+  MediaPlayer.URL = AsxFileName;
+  if (MediaPlayer.CanScan)
+  {
+  	SetBorder(btnFF,"silver","silver","silver","black");
+	SetBorder(btnRew,"silver","silver","silver","black");
+  }
+  else
+  {
+	SetBorder(btnFF,"silver","silver","silver","GRAY");
+	SetBorder(btnRew,"silver","silver","silver","GRAY");
+  }
+} 
+
+// *** Play button click event. ***  
+function PlayBtnClick() 
+{
+  MediaPlayer.Controls.Play();
+}
+
+//  *** Pause button click event ***
+//  If the stream is paused restart it, else pause the stream.
+function PauseBtnClick() 
+{
+  if( MediaPlayer.PlayState == mpPaused ) 
+  {
+    MediaPlayer.Controls.Play();
+  }
+  if(	MediaPlayer.PlayState == mpStopped ) 
+  {
+    MediaPlayer.Controls.Stop();
+  }
+  else
+  {
+    MediaPlayer.Controls.Pause();
+  }
+}
+
+// *** Stop button click event. ***
+// Stop streaming and reset to start of title
+function StopBtnClick() 
+{
+    MediaPlayer.Controls.Stop();
+    MediaPlayer.Controls.CurrentPosition = 0;
+}
+
+function FFBtnClick() 
+{
+  if(	MediaPlayer.PlayState != 0 )
+	MediaPlayer.Controls.FastForward();
+}
+
+function RewBtnClick() 
+{
+  if(	MediaPlayer.PlayState != 0 )
+	MediaPlayer.Controls.FastReverse();
+}
+
+function BtnBack() 
+{
+  parent.close();
+}
+
+</script>
+
+<script language="javascript" FOR="MediaPlayer" EVENT="Buffering(Start)">
+if (Start)
+{
+  parent.RightFrame.VGAPlayer.Pause();
+}
+else
+{
+  parent.RightFrame.VGAPlayer.Play();
+}
+</script>
+
+<script language="javascript">
+var 
+  TimerID=0,Waiting=0,WaitingCount=0;
+
+function Syn()
+{
+  TimerID = setTimeout("Syn()",1000);
+  
+  if (Math.abs(parent.RightFrame.VGAPlayer.CurrentPosition - MediaPlayer.Controls.currentPosition * 1000) >= 1000) 
+  {
+    parent.RightFrame.VGAPlayer.CurrentPosition = MediaPlayer.Controls.currentPosition * 1000;
+  }
+}
+</script>
+
+<script language="javascript" FOR="MediaPlayer" EVENT="playStateChange(NewState)">
+switch(NewState) 
+{
+  case mpPlaying: 
+	parent.RightFrame.VGAPlayer.Play();
+        if (TimerID == 0) Syn();
+	break;
+  case mpPaused:
+	parent.RightFrame.VGAPlayer.Pause();
+	break;
+  case mpStopped:
+	parent.RightFrame.VGAPlayer.Stop();
+	break;
+  case mpEnded:
+	parent.RightFrame.VGAPlayer.Stop();
+}
+</script>
+
+<script language="javascript" FOR="MediaPlayer" EVENT="PositionChange(dblOldPosition, dblNewPosition)">
+  parent.RightFrame.VGAPlayer.CurrentPosition = dblNewPosition * 1000;
+</script>
+
+<script LANGUAGE="JavaScript">
+function SecsToHhMmSs(sec) 
+{
+	var Hh, Mm, Ss, str;
+	if(sec>=0) 
+	{
+	Hh = Math.round(sec/3600 - 0.5);
+	Mm = Math.round((sec % 3600)/60 - 0.5);
+	Ss = Math.round(sec % 60 - 0.5);
+	str = (Hh >= 10 ? Hh : "0"+Hh);
+	str = str + ":" + (Mm >= 10 ? Mm : "0"+Mm);
+	str = str + ":" + (Ss >= 10 ? Ss : "0"+Ss);
+	}
+	else
+	str="00:00:00";
+	return str;
+}
+function UpdateStatus() 
+{
+	var NewLeft, OldPaperName, NewPaperName, Dir, CurrentPaper,Num;
+
+	if(MediaPlayer.PlayState == mpStopped || MediaPlayer.PlayState == mpReady)
+	{
+		btnScroll.style.pixelLeft = 18;
+		btnText.innerText= "　已经停止　"+SecsToHhMmSs(MediaPlayer.Controls.CurrentPosition)+ "/" + SecsToHhMmSs(MediaPlayer.CurrentMedia.Duration);
+	}
+	else
+	{
+		NewLeft= MediaPlayer.Controls.CurrentPosition/MediaPlayer.CurrentMedia.Duration*(OuterDiv.width-18)+18;
+		if (NewLeft > 18) btnScroll.style.pixelLeft = NewLeft;
+		btnText.innerText= "　播放时间  "+SecsToHhMmSs(MediaPlayer.Controls.CurrentPosition)+ "/" + SecsToHhMmSs(MediaPlayer.CurrentMedia.Duration);
+	}
+
+}
+</script>
+</head>
+
+<body bgcolor="silver" >
+<object classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="MediaPlayer" style="LEFT: 0px; POSITION: absolute; TOP: 0px; width: 0px; height: 0px"></object>
+<img id="OuterDiv" src="images/scrool.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/scrool.gif"  style='position:absolute;top:3;left:18;width:96%;height:3;' border="0">
+<!--<img id="AllowScl" src="images/allowdown.gif" style='position:absolute;top:1;left:3;cursor:hand;' onmouseover="switchBtn()" onmouseout="switchBtn()" onclick="HideScl()" alt="隐藏滚动条">
+<img id="AllowCon" src="images/allowdown.gif" style='position:absolute;top:12;left:3;cursor:hand;' onmouseover="switchBtn()" onmouseout="switchBtn()" onclick="HideCon()" alt="隐藏控制栏">
+-->
+<img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:18;
+width:2;' >
+<span id="btnPlay" onmouseover="switchBtn()" onmousedown="switchBtn()"
+ onclick="PlayBtnClick()" onmouseout="switchBtn()"
+style='font-size:9pt;position:absolute;top:11;left:20;
+width:38;height:10;border-width : 1;padding-top : 2;
+padding-left :6;cursor:hand;'>播放
+</span><img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:58;
+width:2;' >
+<span id="btnPause" onmouseover="switchBtn()" onmousedown="switchBtn()"
+onmouseout="switchBtn()" onclick="PauseBtnClick()" 
+style='font-size:9pt;position:absolute;top:11;left:60;
+width:38;height:10;border-width:1;padding-top : 2;padding-left : 6;cursor:hand;'>暂停
+</span><img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:98;
+width:2;' >
+<span id="btnStop" onmouseover="switchBtn()" onmousedown="switchBtn()"
+onmouseout="switchBtn()" onclick="StopBtnClick()"
+style='font-size:9pt;position:absolute;top:11;left:100;
+width:38;height:10;border-width:1;padding-top : 2;padding-left : 6;cursor:hand;'>停止
+</span><img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:138;
+width:2;' >
+<span id="btnFF" onmouseover="switchBtn()" onmousedown="switchBtn()" 
+onmouseout="switchBtn()" onclick="FFBtnClick()"
+style='font-size:9pt;position:absolute;top:11;left:140;
+width:38;height:10;border-width:1;padding-top : 2;padding-left : 6;cursor:hand;'>快进
+</span><img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:178;
+width:2;' >
+<span id="btnRew" onmouseover="switchBtn()" onmousedown="switchBtn()"
+onmouseout="switchBtn()" onclick="RewBtnClick()" 
+style='font-size:9pt;position:absolute;top:11;left:180;
+width:38;height:10;border-width:1;padding-top : 2;padding-left : 6;cursor:hand;'>快退
+</span><img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:218;
+width:2;' >
+<span id="btnBack" onmouseover="switchBtn()" onmousedown="switchBtn()"
+onmouseout="switchBtn()" onclick="BtnBack()"
+style='font-size:9pt;position:absolute;top:11;left:220;
+width:38;height:10;border-width:1;padding-top : 2;padding-left : 6;cursor:hand;'>
+关闭
+</span><img src="images/sline.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/sline.gif" style='position:absolute;top:11;left:258;
+width:2;' >
+
+<span id="btnText" style='font-size:9pt;position:absolute;top:10;left:70%;
+width:200;height:10;border-width:1;padding-top : 2;padding-left : 3;cursor:hand;color:DARKSLATEGRAY'>
+</span>
+<DIV ID=text STYLE="position:relative;top:6;left:20;height:0;width:0;
+  display:none;background-color:green"></DIV>
+ <img id="btnScroll" onmousedown="doMouseDown()" src="images/scrool-button.gif" tppabs="http://61.50.188.200/jxsj/jdyth/KJ/01/images/scrool-button.gif" style='position:absolute;top:0;left:18;' border="0" border="0" width="10" height="10">
+</body>
+</html>
