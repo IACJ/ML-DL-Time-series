@@ -61,3 +61,35 @@
     * 数据显示
     * 数据选择
     * 简单统计与处理
+2. 高级数据处理与可视化
+    * 聚类分析 
+        - sklearn
+    * MAtplotlib绘图基础
+    * 图像属性控制
+    * pandas作图
+    * 数据存取
+    * python的理工类应用
+    * 人文社科类应用
+    * 代码参考
+        - （请将Intel和IBM公司近一年来每个月开票价的平均值绘制在一张图中（用subplot））
+        - kmeansDJI.py
+        - plotKO.py
+        - plot_volumes.py
+        - scikit-learn机器学习经典入门项目
+        - 箱形图
+        - 对音频信号进行简单的处理
+
+# Week 5 
+1. 面向对象
+    * GUI与面向对象
+    * 抽象
+        - 类属型（静态成员）
+    * 继承
+        - 单下划线、双下划线
+
+2. GUI 
+    * GUI的基本框架 （wxPython）
+    * GUI常用组件
+    * 布局管理（sizer）
+    * 其它GUI库
+    * 代码参考
