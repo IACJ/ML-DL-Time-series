@@ -1,5 +1,0 @@
-1. temporal sequence和time-series分别该怎么翻译？
-
-2. Time-series cluster prototypes中的prototypes该怎么理解？
-
-3. 
